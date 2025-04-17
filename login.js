@@ -8,7 +8,7 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    window.location.href = "profile.html";
+    window.location.href = "index.html";
   } catch (error) {
     alert("Login failed: " + error.message);
   }

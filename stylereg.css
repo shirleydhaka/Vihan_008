@@ -1,0 +1,45 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, rgb(162, 113, 255), rgb(163, 80, 240));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+  }
+  .form-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  }
+  h2 {
+    text-align: center;
+  }
+  form input, form select, form textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 0.5rem 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  button {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #7b2ff7;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #5c1cc2;
+  }
+  #profile-data img {
+    max-width: 100px;
+    border-radius: 50%;
+  }
+  

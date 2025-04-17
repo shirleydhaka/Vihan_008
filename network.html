@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechSakhi Forums - Women's Safety Platform</title>
+    <style>
+        :root {
+            --primary-color: #ff69b4;
+            --secondary-color: #ffb6c1;
+            --accent-color: #db7093;
+            --light-pink: #fff0f5;
+            --dark-pink: #c71585;
+            --text-color: #333;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-pink);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), #ca6ea8);
+            color: white;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+        
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: -80px;
+            left: -80px;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.8rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header p {
+            margin: 0.5rem 0 0;
+            font-size: 1.2rem;
+            position: relative;
+            z-index: 1;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .category-card {
+            background-color: var(--white);
+            border-radius: 15px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .category-card i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: var(--transition);
+        }
+        
+        .category-card:hover i {
+            transform: scale(1.1);
+        }
+        
+        .category-card h2 {
+            margin: 0 0 1rem;
+            color: #1800ffc7;
+            font-weight: 600;
+            font-size: 1.5rem;
+        }
+        
+        .category-card p {
+            margin: 0;
+            color: var(--text-color);
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+        
+        .forum-container, .thread-view {
+            display: none;
+            background-color: var(--white);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            margin-top: 2rem;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .forum-header, .thread-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+        
+        .forum-header h2, .thread-header h2 {
+            margin: 0;
+            color: var(--dark-pink);
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .back-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-pink));
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 8px rgba(219, 112, 147, 0.3);
+        }
+        
+        .back-button:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 6px 12px rgba(219, 112, 147, 0.4);
+        }
+        
+        .threads-list {
+            margin-bottom: 3rem;
+        }
+        
+        .thread {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+            border-left: 5px solid var(--primary-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .thread::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255,182,193,0.1), rgba(255,105,180,0.05));
+            z-index: 0;
+        }
+        
+        .thread:hover {
+            transform: translateX(10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .thread h3 {
+            margin: 0 0 0.8rem;
+            color: var(--dark-pink);
+            font-size: 1.3rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .thread-meta {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .thread-content {
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .thread-replies-count {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .new-thread-form {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--secondary-color);
+        }
+        
+        .single-thread {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 5px solid var(--dark-pink);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+        
+        .single-thread::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255,182,193,0.1), rgba(255,105,180,0.05));
+            z-index: 0;
+        }
+        
+        .single-thread h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .replies-list {
+            margin: 2rem 0;
+            padding-left: 1.5rem;
+            border-left: 3px dashed var(--secondary-color);
+        }
+        
+        .reply {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .reply:hover {
+            transform: translateX(5px);
+        }
+        
+        .reply::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -1.5rem;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            transform: translateY(10px);
+        }
+        
+        .reply-meta {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            margin-bottom: 0.8rem;
+            display: flex;
+            gap: 1rem;
+            font-weight: 500;
+        }
+        
+        .reply-content {
+            margin-bottom: 0.5rem;
+            line-height: 1.7;
+        }
+        
+        .new-reply-form {
+            margin-top: 3rem;
+            padding: 2rem;
+            background-color: var(--light-pink);
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: var(--dark-pink);
+            font-size: 1.1rem;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--secondary-color);
+            border-radius: 8px;
+            font-family: inherit;
+            transition: var(--transition);
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.2);
+        }
+        
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .submit-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-pink));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 8px rgba(219, 112, 147, 0.3);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(219, 112, 147, 0.4);
+        }
+        
+        .emergency-banner {
+            background: #e81e1ee8;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-bottom: 3rem;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 4px 8px rgba(255, 71, 87, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .emergency-banner i {
+            margin-right: 0.5rem;
+        }
+        
+        .emergency-banner a {
+            color: white;
+            text-decoration: underline;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+        
+        .emergency-banner a:hover {
+            opacity: 0.9;
+        }
+        
+        .emergency-banner::after {
+            content: "";
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+        
+        footer {
+            background: linear-gradient(135deg, var(--primary-color), #ca6ea8);
+            color: white;
+            text-align: center;
+            padding: 3rem 1.5rem;
+            margin-top: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        footer::before {
+            content: "";
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+        
+        footer p {
+            margin: 0.5rem 0;
+            position: relative;
+            z-index: 1;
+        }
+        
+        footer p:first-child {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .no-replies {
+            text-align: center;
+            padding: 2rem;
+            color: var(--accent-color);
+            font-style: italic;
+            background-color: rgba(255, 182, 193, 0.2);
+            border-radius: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .categories {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .forum-container, .thread-view {
+                padding: 1.5rem;
+            }
+            
+            .thread-header, .forum-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .back-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <h1>TechSakhi Forums</h1>
+        <p>A safe space for women to discuss safety concerns and find support</p>
+    </div>
+    
+    <div class="emergency-banner">
+        <i class="fas fa-exclamation-triangle"></i> In an emergency? <a href="#">Click here for immediate help</a> or call 112 (India Emergency Number)
+    </div>
+    
+    <div class="container">
+        <div class="categories" id="categories">
+            <div class="category-card" onclick="showForum('workplace-harassment')">
+                <i class="fas fa-briefcase"></i>
+                <h2>Workplace Harassment</h2>
+                <p>Share experiences and get advice about workplace issues</p>
+            </div>
+            
+            <div class="category-card" onclick="showForum('stalking')">
+                <i class="fas fa-user-secret"></i>
+                <h2>Stalking</h2>
+                <p>Discuss stalking incidents and safety measures</p>
+            </div>
+            
+            <div class="category-card" onclick="showForum('online-harassment')">
+                <i class="fas fa-laptop"></i>
+                <h2>Online Harassment</h2>
+                <p>Cyberbullying, revenge porn, and digital safety</p>
+            </div>
+            
+            <div class="category-card" onclick="showForum('domestic-violence')">
+                <i class="fas fa-home"></i>
+                <h2>Domestic Violence</h2>
+                <p>Support for those facing abuse at home</p>
+            </div>
+            
+            <div class="category-card" onclick="showForum('public-safety')">
+                <i class="fas fa-street-view"></i>
+                <h2>Public Safety</h2>
+                <p>Street harassment, transportation safety, and public spaces</p>
+            </div>
+            
+            <div class="category-card" onclick="showForum('legal-rights')">
+                <i class="fas fa-gavel"></i>
+                <h2>Legal Rights</h2>
+                <p>Know your rights and legal recourse options</p>
+            </div>
+        </div>
+        
+        <div class="forum-container" id="forum-container">
+            <div class="forum-header">
+                <h2 id="forum-title">Forum Title</h2>
+                <button class="back-button" onclick="hideForum()"><i class="fas fa-arrow-left"></i> Back to Categories</button>
+            </div>
+            
+            <div class="threads-list" id="threads-list">
+                <!-- Threads will be loaded here -->
+            </div>
+            
+            <div class="new-thread-form">
+                <h3>Start a New Discussion</h3>
+                <form id="thread-form">
+                    <div class="form-group">
+                        <label for="thread-title">Title</label>
+                        <input type="text" id="thread-title" required placeholder="What would you like to discuss?">
+                    </div>
+                    <div class="form-group">
+                        <label for="thread-content">Your Message</label>
+                        <textarea id="thread-content" required placeholder="Share your thoughts, questions, or experiences..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-button"><i class="fas fa-paper-plane"></i> Post Thread</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="thread-view" id="thread-view">
+            <div class="thread-header">
+                <h2 id="thread-view-title">Thread Title</h2>
+                <button class="back-button" onclick="backToForum()"><i class="fas fa-arrow-left"></i> Back to Threads</button>
+            </div>
+            
+            <div class="single-thread" id="single-thread">
+                <!-- The main thread content will be loaded here -->
+            </div>
+            
+            <div class="replies-list" id="replies-list">
+                <!-- Replies will be loaded here -->
+            </div>
+            
+            <div class="new-reply-form">
+                <h3>Post a Reply</h3>
+                <form id="reply-form">
+                    <div class="form-group">
+                        <label for="reply-content">Your Message</label>
+                        <textarea id="reply-content" required placeholder="Write your reply..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-button"><i class="fas fa-reply"></i> Post Reply</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>TechSakhi Forums &copy; 2023 | Empowering Women Through Technology</p>
+        <p>Need help? Contact our support team at support@techsakhi.org</p>
+    </footer>
+
+    <script>
+        // Sample data for threads in each category
+        const forumData = {
+            'workplace-harassment': {
+                title: 'Workplace Harassment',
+                threads: [
+                    {
+                        id: 'wh1',
+                        title: 'How to handle inappropriate comments from boss?',
+                        author: 'AnonymousUser23',
+                        date: '2023-05-15',
+                        content: 'My manager keeps making comments about my appearance and it makes me uncomfortable. How should I address this without risking my job?',
+                        replies: [
+                            {
+                                id: 'wh1r1',
+                                author: 'HRProfessional',
+                                date: '2023-05-16',
+                                content: 'Document every incident with dates, times, and exact words used. Most companies have policies against this behavior. You might want to first talk to HR confidentially - they should handle it appropriately without revealing your identity initially.'
+                            },
+                            {
+                                id: 'wh1r2',
+                                author: 'BeenThere',
+                                date: '2023-05-16',
+                                content: 'I had a similar situation last year. I found that responding with "That comment makes me uncomfortable" in a neutral, professional tone often shuts it down without escalating. If it continues, definitely go to HR with your documentation.'
+                            },
+                            {
+                                id: 'wh1r3',
+                                author: 'LegalAdvocate',
+                                date: '2023-05-17',
+                                content: 'Remember this is legally considered sexual harassment in most countries. You have rights protected by law. Keep all evidence (emails, messages, notes about verbal comments) and consider consulting an employment lawyer if HR doesn\'t take appropriate action.'
+                            }
+                        ]
+                    },
+                    {
+                        id: 'wh2',
+                        title: 'Reporting harassment to HR - experiences?',
+                        author: 'SafeAtWork',
+                        date: '2023-05-10',
+                        content: 'Has anyone gone through the process of reporting harassment to HR? I\'m worried about retaliation and want to know what to expect from the process. How long does it typically take? Were you satisfied with the outcome?',
+                        replies: [
+                            {
+                                id: 'wh2r1',
+                                author: 'LegalEagle',
+                                date: '2023-05-11',
+                                content: 'Make sure to get everything in writing. Ask for copies of your complaint and any responses. Retaliation is illegal but does happen, so documentation is key. The process varies by company - some resolve in weeks, others drag on for months. Always follow up emails with "Per our conversation..." to create a paper trail.'
+                            },
+                            {
+                                id: 'wh2r2',
+                                author: 'Survivor22',
+                                date: '2023-05-12',
+                                content: 'I reported last year. It took about 3 weeks for investigation. They fired the person but then my workload increased suspiciously. I documented everything and eventually got transferred to a better department. It\'s hard but worth it - now I sleep better.'
+                            }
+                        ]
+                    }
+                ]
+            },
+            'stalking': {
+                title: 'Stalking',
+                threads: [
+                    {
+                        id: 's1',
+                        title: 'Ex-boyfriend won\'t stop contacting me',
+                        author: 'LookingForPeace',
+                        date: '2023-05-12',
+                        content: 'We broke up 6 months ago but he keeps showing up at my workplace and sending messages from different numbers after I block him. I\'ve asked him to stop multiple times but it continues. What legal options do I have in India? How effective are restraining orders?',
+                        replies: [
+                            {
+                                id: 's1r1',
+                                author: 'LawStudent',
+                                date: '2023-05-13',
+                                content: 'Under Section 354D of IPC, this is criminal stalking. You can file an FIR at your local police station. Save all messages (screenshots with dates) and document every encounter (date, time, what happened). Most cities have free legal aid for stalking cases - contact the State Legal Services Authority.'
+                            },
+                            {
+                                id: 's1r2',
+                                author: 'SafetyFirst',
+                                date: '2023-05-14',
+                                content: '1) Inform your workplace security with his photo 2) Vary your routines 3) Get a new SIM card but keep the old one active in a spare phone to collect evidence 4) Consider a restraining order - they do help as violation becomes a separate offense. The NGO Majlis can assist with the process.'
+                            },
+                            {
+                                id: 's1r3',
+                                author: 'CyberCellOfficer',
+                                date: '2023-05-15',
+                                content: 'For the changing numbers issue: File a complaint with the Cyber Crime cell (cybercrime.gov.in). Telecom providers can block his IMEI across all numbers. Also install Call Log Backup apps to automatically record all calls as evidence.'
+                            }
+                        ]
+                    },
+                    {
+                        id: 's2',
+                        title: 'Social media stalking - how to protect myself?',
+                        author: 'DigitalSafetyFirst',
+                        date: '2023-05-01',
+                        content: 'Someone is obsessively tracking all my social media activity and using it to harass me. They create new accounts when I block them. How can I make my accounts more private? Are there legal options against this kind of harassment?',
+                        replies: [
+                            {
+                                id: 's2r1',
+                                author: 'TechExpert',
+                                date: '2023-05-02',
+                                content: '1) Set all profiles to private 2) Remove location tags 3) Use "Restricted" lists on Instagram/Facebook 4) Disable "seen" receipts 5) Try using a pseudonym. For legal action: Screenshot everything and file under IT Act Section 66A (cyberstalking). Platforms must remove abusive content within 24hrs of complaint in India.'
+                            }
+                        ]
+                    }
+                ]
+            },
+            'online-harassment': {
+                title: 'Online Harassment',
+                threads: [
+                    {
+                        id: 'oh1',
+                        title: 'Someone created a fake profile using my photos',
+                        author: 'RealMe123',
+                        date: '2023-05-14',
+                        content: 'I discovered someone made a fake Instagram account with my pictures and is messaging people pretending to be me, including sending inappropriate messages to my contacts. How do I get this taken down quickly?',
+                        replies: []
+                    }
+                ]
+            }
+        };
+        
+        // Current active category and thread
+        let currentCategory = '';
+        let currentThreadId = '';
+        
+        // Show forum for a specific category
+        function showForum(category) {
+            currentCategory = category;
+            const forum = forumData[category];
+            
+            // Update UI
+            document.getElementById('categories').style.display = 'none';
+            document.getElementById('forum-container').style.display = 'block';
+            document.getElementById('thread-view').style.display = 'none';
+            document.getElementById('forum-title').textContent = forum.title;
+            
+            // Load threads
+            const threadsList = document.getElementById('threads-list');
+            threadsList.innerHTML = '';
+            
+            if (forum.threads.length === 0) {
+                threadsList.innerHTML = '<div class="no-replies">No threads yet in this category. Be the first to start a discussion!</div>';
+            } else {
+                forum.threads.forEach(thread => {
+                    const threadElement = document.createElement('div');
+                    threadElement.className = 'thread';
+                    threadElement.innerHTML = `
+                        <h3>${thread.title}</h3>
+                        <div class="thread-meta">
+                            <span>Posted by ${thread.author}</span>
+                            <span>${thread.date}</span>
+                        </div>
+                        <div class="thread-content">${thread.content}</div>
+                        <div class="thread-replies-count">
+                            <i class="fas fa-comments"></i> 
+                            ${thread.replies.length} ${thread.replies.length === 1 ? 'reply' : 'replies'}
+                        </div>
+                    `;
+                    threadElement.addEventListener('click', () => showThread(thread.id));
+                    threadsList.appendChild(threadElement);
+                });
+            }
+        }
+        
+        // Show a specific thread with its replies
+        function showThread(threadId) {
+            currentThreadId = threadId;
+            const forum = forumData[currentCategory];
+            const thread = forum.threads.find(t => t.id === threadId);
+            
+            // Update UI
+            document.getElementById('forum-container').style.display = 'none';
+            document.getElementById('thread-view').style.display = 'block';
+            document.getElementById('thread-view-title').textContent = thread.title;
+            
+            // Load main thread content
+            const singleThread = document.getElementById('single-thread');
+            singleThread.innerHTML = `
+                <h3>${thread.title}</h3>
+                <div class="thread-meta">
+                    <span>Posted by ${thread.author}</span>
+                    <span>${thread.date}</span>
+                </div>
+                <div class="thread-content">${thread.content}</div>
+            `;
+            
+            // Load replies
+            const repliesList = document.getElementById('replies-list');
+            repliesList.innerHTML = '';
+            
+            if (thread.replies.length === 0) {
+                repliesList.innerHTML = '<div class="no-replies">No replies yet. Be the first to respond!</div>';
+            } else {
+                thread.replies.forEach(reply => {
+                    const replyElement = document.createElement('div');
+                    replyElement.className = 'reply';
+                    replyElement.innerHTML = `
+                        <div class="reply-meta">
+                            <span>${reply.author}</span>
+                            <span>${reply.date}</span>
+                        </div>
+                        <div class="reply-content">${reply.content}</div>
+                    `;
+                    repliesList.appendChild(replyElement);
+                });
+            }
+        }
+        
+        // Hide forum and show categories
+        function hideForum() {
+            document.getElementById('categories').style.display = 'grid';
+            document.getElementById('forum-container').style.display = 'none';
+            document.getElementById('thread-view').style.display = 'none';
+            currentCategory = '';
+            currentThreadId = '';
+        }
+        
+        // Back to forum from thread view
+        function backToForum() {
+            document.getElementById('forum-container').style.display = 'block';
+            document.getElementById('thread-view').style.display = 'none';
+            currentThreadId = '';
+            showForum(currentCategory);
+        }
+        
+        // Handle new thread submission
+        document.getElementById('thread-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('thread-title').value;
+            const content = document.getElementById('thread-content').value;
+            
+            if (title && content && currentCategory) {
+                // Create new thread object
+                const newThread = {
+                    id: 't' + Date.now(),
+                    title: title,
+                    author: 'You',
+                    date: new Date().toISOString().split('T')[0],
+                    content: content,
+                    replies: []
+                };
+                
+                // Add to our data
+                forumData[currentCategory].threads.unshift(newThread);
+                
+                // Clear form
+                document.getElementById('thread-form').reset();
+                
+                // Reload threads to show the new one
+                showForum(currentCategory);
+                
+                // Scroll to top to see the new thread
+                window.scrollTo(0, 0);
+            }
+        });
+        
+        // Handle new reply submission
+        document.getElementById('reply-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const content = document.getElementById('reply-content').value;
+            
+            if (content && currentCategory && currentThreadId) {
+                const forum = forumData[currentCategory];
+                const thread = forum.threads.find(t => t.id === currentThreadId);
+                
+                if (thread) {
+                    // Create new reply object
+                    const newReply = {
+                        id: 'r' + Date.now(),
+                        author: 'You',
+                        date: new Date().toISOString().split('T')[0],
+                        content: content
+                    };
+                    
+                    // Add to our data
+                    thread.replies.push(newReply);
+                    
+                    // Clear form
+                    document.getElementById('reply-form').reset();
+                    
+                    // Reload thread to show the new reply
+                    showThread(currentThreadId);
+                    
+                    // Scroll to the new reply
+                    setTimeout(() => {
+                        const replies = document.getElementById('replies-list').children;
+                        if (replies.length > 0) {
+                            replies[replies.length - 1].scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }, 100);
+                }
+            }
+        });
+        
+        // Initialize the page
+        hideForum(); // Start with categories visible
+    </script>
+</body>
+</html>
